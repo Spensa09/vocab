@@ -13,7 +13,14 @@ function renderVocabSummary(){
   document.querySelector('#vocabReview').textContent=reviewCount;
 }
 function validNotionUrl(value){
-  try{const url=new URL(value);return url.protocol==='https:'&&(url.hostname.endsWith('notion.so')||url.hostname.endsWith('notion.site'))}catch{return false}
+  try{
+    const url=new URL(value),host=url.hostname.toLowerCase();
+    return url.protocol==='https:'&&(
+      host==='app.notion.com'||
+      host==='notion.so'||host.endsWith('.notion.so')||
+      host==='notion.site'||host.endsWith('.notion.site')
+    );
+  }catch{return false}
 }
 function renderNotion(){
   const connected=validNotionUrl(data.notionUrl||''),button=document.querySelector('#outlook');
@@ -25,7 +32,7 @@ document.querySelector('#outlook').onclick=()=>{
     window.open(data.notionUrl,'_blank','noopener');
     return;
   }
-  const value=prompt('粘贴你的 Notion 页面链接（https://...notion.so 或 notion.site）');
+  const value=prompt('粘贴你的 Notion 页面链接（支持 app.notion.com、notion.so 和 notion.site）');
   if(value===null)return;
   if(!validNotionUrl(value.trim()))return alert('请输入有效的 Notion 页面链接');
   data.notionUrl=value.trim();
