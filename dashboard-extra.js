@@ -1,12 +1,12 @@
-const VOCAB_START=new Date('2026-09-19T00:00:00+08:00'),VOCAB_GAPS=[1,2,4,7,15,30],VOCAB_NEW_PER_DAY=2,VOCAB_TOTAL_DAYS=Math.ceil(87/VOCAB_NEW_PER_DAY)+Math.max(...VOCAB_GAPS);
+const VOCAB_START=new Date('2026-09-28T00:00:00+08:00'),VOCAB_GAPS=[1,2,4,7,15,30],VOCAB_START_LIST=89,VOCAB_NEW_PER_DAY=2,VOCAB_TOTAL_DAYS=Math.ceil(VOCAB_START_LIST/VOCAB_NEW_PER_DAY)+Math.max(...VOCAB_GAPS);
 function renderVocabSummary(){
   const day=Math.floor((new Date()-VOCAB_START)/86400000);
   let newCount=0,reviewCount=0;
   if(day>=0&&day<VOCAB_TOTAL_DAYS){
     for(let list=100;list>=1;list--){
-      const learned=list>=88?0:Math.floor((87-list)/VOCAB_NEW_PER_DAY),gap=day-learned;
-      if(list<=87&&gap===0)newCount++;
-      if((list>=88&&day===0)||VOCAB_GAPS.includes(gap))reviewCount++;
+      const learned=list>VOCAB_START_LIST?0:Math.floor((VOCAB_START_LIST-list)/VOCAB_NEW_PER_DAY),gap=day-learned;
+      if(list<=VOCAB_START_LIST&&gap===0)newCount++;
+      if((list>VOCAB_START_LIST&&day===0)||VOCAB_GAPS.includes(gap))reviewCount++;
     }
   }
   document.querySelector('#vocabNew').textContent=newCount;
